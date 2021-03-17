@@ -13,18 +13,31 @@ from rps import get_winner, rand_hand
 
 class Game:
     """ Main class to play the game. Logic part of the game. """
+    ties = 0
+    comp_wins = 0
+    user_wins = 0
 
-    def __init__(self, hand, dash):
-        self.hand = hand
-        self.dash = dash
+    def __init__(self):
+        pass
 
-    def play(self):
-        computer = rand_hand(self.hand.HANDS)
-        user = self.hand.name
+    @staticmethod
+    def play(hand):
+        """ Play game and return the winner. """
+        computer = rand_hand(hand.HANDS)
+        user = hand.name
         winner = get_winner(computer, user)
-        dash.update(winner)
         return winner
+
+    @staticmethod
+    def update_score(winner):
+        if winner == 0:
+            Game.ties += 1
+        elif winner == 1:
+            Game.user_wins += 1
+        elif winner == -1:
+            Game.comp_wins += 1
         
+
 class Hand:
     """ Player hand (rock, paper, scissors) """
     HANDS = ["Rock", "Paper", "Scissors"]
@@ -40,45 +53,54 @@ class Hand:
         label.bind("<Button-1>", self.onclick)
 
     def onclick(self, event):
-        game = Game(self)
-        game.play() 
+        print('Hand on click')
+        res = Game.play(self)
+        Game.update_score(res)
+
+        Dashboard.update([Game.ties, Game.comp_wins, Game.user_wins])
+
 
 class Dashboard:
     """ Display the result of the game. """
+    message = None
+
     def __init__(self, master):
         self.master = master
-        self.computer_wins = 0
-        self.user_wins= 0
-        self.ties = 0
+        Dashboard.message = ttk.Label(self.master)
+        Dashboard.message.pack()
+        
     
     def show(self):
-        ttk.Label(self.master, text="Game Result").pack()
+        Dashboard.message["text"] = "Game Play Board\n" 
+        Dashboard.message["text"] += "Ties = 0\n"
+        Dashboard.message["text"] += "Computer Wins = 0\n"
+        Dashboard.message["text"] += "User Wins = 0\n"
 
-    def update(self, result):
+    @staticmethod
+    def update(values):
         """ Update dashboard based on winner. """
-        if result == 0:
-            self.ties += 1
-        elif result == 1:
-            self.user_wins += 1
-        else:
-            computer_wins += 1
-        print(self.ties, self.computer_wins, self.user_wins)
-
+        text = "Game Play Board"
+        text += "Ties: {}\nComputer Wins: {}\nUser Wins: {}".format(*values)
+        Dashboard.message["text"] = text 
 
 def main():
     root = tk.Tk()
     root.title("ROCK PAPER SCISSORS")
     mainframe = ttk.Frame(root)
-
-    rock = Hand(mainframe, "Rock", "./img/rock.png")
-    paper = Hand(mainframe, "paper", "./img/paper.png")
-    scissors = Hand(mainframe, "scissors", "./img/scissors.png")
+    
+    handframe = ttk.Frame(mainframe)
+    rock = Hand(handframe, "Rock", "./img/rock.png")
+    paper = Hand(handframe, "paper", "./img/paper.png")
+    scissors = Hand(handframe, "scissors", "./img/scissors.png")
     rock.show()
     paper.show()
     scissors.show()
-
+    handframe.pack()
+    
+    dashframe = ttk.Frame(mainframe)
     dashboard = Dashboard(mainframe)
     dashboard.show()
+    dashframe.pack()
     
     mainframe.pack(fill=tk.BOTH)
     root.mainloop()
