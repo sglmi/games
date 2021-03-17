@@ -48,6 +48,11 @@ def play2(computer, user):
     elif result == -1:
         return "You Lose", ""
 
+def rand_hand(hands):
+    """ Create random hand form the list."""
+    return random.choice(hands)
+
+
 def main():
     choices = {"1": "Rock", "2": "Paper", "3": "Scissors"}
     computer_hand = random.choice(list(choices.values()))
