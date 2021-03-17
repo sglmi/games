@@ -53,10 +53,9 @@ class Hand:
         label.bind("<Button-1>", self.onclick)
 
     def onclick(self, event):
-        print('Hand on click')
         res = Game.play(self)
         Game.update_score(res)
-
+        # update dashboard play board
         Dashboard.update([Game.ties, Game.comp_wins, Game.user_wins])
 
 
@@ -66,7 +65,7 @@ class Dashboard:
 
     def __init__(self, master):
         self.master = master
-        Dashboard.message = ttk.Label(self.master)
+        Dashboard.message = ttk.Label(self.master, font="24", foreground="blue")
         Dashboard.message.pack()
         
     
@@ -74,12 +73,12 @@ class Dashboard:
         Dashboard.message["text"] = "Game Play Board\n" 
         Dashboard.message["text"] += "Ties = 0\n"
         Dashboard.message["text"] += "Computer Wins = 0\n"
-        Dashboard.message["text"] += "User Wins = 0\n"
+        Dashboard.message["text"] += "User Wins = 0"
 
     @staticmethod
     def update(values):
         """ Update dashboard based on winner. """
-        text = "Game Play Board"
+        text = "Game Play Board\n"
         text += "Ties: {}\nComputer Wins: {}\nUser Wins: {}".format(*values)
         Dashboard.message["text"] = text 
 
@@ -90,8 +89,8 @@ def main():
     
     handframe = ttk.Frame(mainframe)
     rock = Hand(handframe, "Rock", "./img/rock.png")
-    paper = Hand(handframe, "paper", "./img/paper.png")
-    scissors = Hand(handframe, "scissors", "./img/scissors.png")
+    paper = Hand(handframe, "Paper", "./img/paper.png")
+    scissors = Hand(handframe, "Scissors", "./img/scissors.png")
     rock.show()
     paper.show()
     scissors.show()
