@@ -1,40 +1,35 @@
 import pygame
 
-from utils import Color
-from utils import Setting
 
-import pygame
+# colors
+RED = (255, 0, 0)
+GREEN = (0, 255, 0)
+BLACK = (0, 0, 0)
 
-class Snake(pygame.sprite.Sprite):
-    def __init__(self, screen):
-        super().__init__()
-        self.image = pygame.Surface((25, 25))
-        self.image.fill(Color.GREEN)
-        self.rect = self.image.get_rect()
-        self.rect.center = (Setting.WIDTH / 2, Setting.HEIGHT / 2)
-        self.speedx = 5
-        self.speedy = 5
-        self.direction = None
-    def update(self):
-        self.key_pressed = pygame.key.get_pressed()
-        if self.direction == 'right':
-            self.rect.x += 5
-        elif self.direction == 'left':
-            self.rect.x -= 5
-        elif self.direction == 'up':
-            self.rect.y -= 5
-        elif self.direction == 'down':
-            self.rect.y += 5
+WIDTH = 700
+HEIGHT = 500
+SIZE = (WIDTH, HEIGHT)
+FPS = 30
 
-        if self.key_pressed[pygame.K_LEFT]:
-            self.direction = 'left'
-        if self.key_pressed[pygame.K_RIGHT]:
-            self.direction = 'right'
-        if self.key_pressed[pygame.K_UP]:
-            self.direction = 'up'
-        if self.key_pressed[pygame.K_DOWN]:
-            self.direction = 'down'
+pygame.init()
+pygame.mixer.init()
+screen = pygame.display.set_mode(SIZE)
+pygame.display.set_caption("Snake")
+clock = pygame.time.Clock()
 
+running = True
+while running:
+    clock.tick(FPS)
+    # event handling
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
 
-class Food(pygame.sprite.Sprite):
-    pass
+    # update sprites
+
+    # draw / render
+    screen.fill(BLACK)
+    # draw sprites
+    pygame.display.flip()
+
+pygame.quit()
