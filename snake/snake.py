@@ -19,6 +19,12 @@ screen = pygame.display.set_mode(SIZE)
 pygame.display.set_caption("Snake")
 clock = pygame.time.Clock()
 
+class Direction:
+    LEFT = 0
+    UP = 1
+    RIGHT = 2
+    DOWN = 3
+
 class Snake(pygame.sprite.Sprite):
     block_x = 25
     block_y = 25
@@ -33,17 +39,30 @@ class Snake(pygame.sprite.Sprite):
         self.rect.centery = HEIGHT // 2
         self.speedx = 5 
         self.speedy = 5
+        self.direction = Direction.LEFT
+    
+    def crawl(self, direction):
+        if direction == Direction.LEFT:
+            self.rect.x -= self.speedx
+        if direction == Direction.RIGHT:
+            self.rect.x += self.speedx
+        if direction == Direction.UP:
+            self.rect.y -= self.speedy
+        if direction == Direction.DOWN:
+            self.rect.y += self.speedy
 
     def update(self):
         key_pressed = pygame.key.get_pressed()
         if key_pressed[pygame.K_LEFT]:
-            self.rect.x -= self.speedx
+            self.direction = Direction.LEFT
         if key_pressed[pygame.K_RIGHT]:
-            self.rect.x += self.speedx
+            self.direction = Direction.RIGHT 
         if key_pressed[pygame.K_UP]:
-            self.rect.y -= self.speedy
+            self.direction = Direction.UP
         if key_pressed[pygame.K_DOWN]:
-            self.rect.y += self.speedy
+            self.direction = Direction.DOWN
+        self.crawl(self.direction)
+
 
 class Food(pygame.sprite.Sprite):
     block_x = 25
