@@ -1,3 +1,5 @@
+import random
+
 import pygame
 
 
@@ -18,21 +20,50 @@ pygame.display.set_caption("Snake")
 clock = pygame.time.Clock()
 
 class Snake(pygame.sprite.Sprite):
+    block_x = 25
+    block_y = 25
+    block_size = (block_x, block_y)
+
     def __init__(self):
         super().__init__()
-        self.image = pygame.Surface((50, 50))
+        self.image = pygame.Surface(Snake.block_size)
         self.image.fill(GREEN)
         self.rect = self.image.get_rect()
         self.rect.centerx = WIDTH // 2
         self.rect.centery = HEIGHT // 2
-        self.speedx = 1 
+        self.speedx = 5 
+        self.speedy = 5
 
     def update(self):
-        self.rect.x += self.speedx
+        key_pressed = pygame.key.get_pressed()
+        if key_pressed[pygame.K_LEFT]:
+            self.rect.x -= self.speedx
+        if key_pressed[pygame.K_RIGHT]:
+            self.rect.x += self.speedx
+        if key_pressed[pygame.K_UP]:
+            self.rect.y -= self.speedy
+        if key_pressed[pygame.K_DOWN]:
+            self.rect.y += self.speedy
+
+class Food(pygame.sprite.Sprite):
+    block_x = 25
+    block_y = 25
+    block_size = (block_x, block_y)
+
+    def __init__(self):
+        super().__init__()
+        self.image = pygame.Surface(Food.block_size)
+        self.image.fill(RED)
+        self.rect = self.image.get_rect()
+        # position
+        self.rect.x = random.randrange(0, WIDTH - Food.block_x)
+        self.rect.y = random.randrange(0, HEIGHT - Food.block_y)
 
 all_sprites = pygame.sprite.Group()
 snake = Snake()
+food = Food()
 all_sprites.add(snake)
+all_sprites.add(food)
 
 running = True
 while running:
