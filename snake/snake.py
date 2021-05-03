@@ -1,4 +1,5 @@
 import random
+from enum import Enum
 
 import pygame
 
@@ -7,6 +8,7 @@ import pygame
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
 BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
 
 WIDTH = 700
 HEIGHT = 500
@@ -19,7 +21,7 @@ screen = pygame.display.set_mode(SIZE)
 pygame.display.set_caption("Snake")
 clock = pygame.time.Clock()
 
-class Direction:
+class Direction(Enum):
     LEFT = 0
     UP = 1
     RIGHT = 2
@@ -32,7 +34,7 @@ class Snake(pygame.sprite.Sprite):
 
     def __init__(self):
         super().__init__()
-        self.image = pygame.Surface(Snake.block_size)
+        self.image = pygame.Surface(Snake.block_size)  # snake head
         self.image.fill(GREEN)
         self.rect = self.image.get_rect()
         self.rect.centerx = WIDTH // 2
@@ -40,6 +42,7 @@ class Snake(pygame.sprite.Sprite):
         self.speedx = 5 
         self.speedy = 5
         self.direction = Direction.LEFT
+        self.score = 0
     
     def crawl(self, direction):
         if direction == Direction.LEFT:
@@ -50,6 +53,29 @@ class Snake(pygame.sprite.Sprite):
             self.rect.y -= self.speedy
         if direction == Direction.DOWN:
             self.rect.y += self.speedy
+
+    def is_eat(self, food):
+        is_collision = pygame.sprite.collide_rect(self, food)
+        if is_collision:
+            return True
+        return False
+
+    def grow(self):
+        """ Grow snake body with the amount of score
+            if score was 8 snake body need to be 8 time of block size.
+
+            I have the head of snake green block 
+            I need to add next surface after head
+            Every time I make the snake I will increase the body
+            meaning all images drown again plus new  block
+            """
+        #print(dir(self.image))
+        self.image = pygame.Surface((Snake.block_x * self.score , Snake.block_y))  # snake body
+        self.image.fill(GREEN)
+        #self.image.blit(screen, self.rect)
+        #print(self.image.get_rect())
+
+         
 
     def update(self):
         key_pressed = pygame.key.get_pressed()
@@ -63,6 +89,7 @@ class Snake(pygame.sprite.Sprite):
             self.direction = Direction.DOWN
         self.crawl(self.direction)
 
+        print(self.rect)
 
 class Food(pygame.sprite.Sprite):
     block_x = 25
@@ -92,10 +119,20 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
+    # if snake eat a food
+    if snake.is_eat(food):
+        snake.score += 1
+        food.kill()
+        # create new food
+        food = Food()
+        all_sprites.add(food)
+        # grow snake body
+        snake.grow() 
+
     # update sprites
     all_sprites.update()
     # draw / render
-    screen.fill(BLACK)
+    screen.fill(WHITE)
     # draw sprites
     all_sprites.draw(screen)
 
