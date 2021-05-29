@@ -2,7 +2,7 @@ import random
 import time
 
 # create random number
-def get_random_number(start=1, end=100):
+def get_random_number(start=1, end=10):
     """Create random number between start and end range."""
     return random.randint(start, end)
 
