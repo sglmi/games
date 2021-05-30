@@ -1,5 +1,5 @@
 import os
-import api
+import brain_stretch as brain
 
 os.system("clear")
 
@@ -16,21 +16,21 @@ def menu():
 
     while n > 0:
         # create random numbers
-        number1 = api.get_random_number(start_range, end_range)
-        number2 = api.get_random_number(start_range, end_range)
+        number1 = brain.get_random_number(start_range, end_range)
+        number2 = brain.get_random_number(start_range, end_range)
         equation = f"{number1} {operator} {number2}"
 
         # get response and set start and end time
-        start_time = api.current_time()
+        start_time = brain.current_time()
         response = int(input(f"{equation} = "))
-        end_time = api.current_time()
+        end_time = brain.current_time()
 
         # calculate response and total response time
-        response_time = api.get_time_diff(start_time, end_time)
+        response_time = brain.get_time_diff(start_time, end_time)
         total_response_time += response_time
         # get answer of a equation
-        answer = api.calculate(equation)
-        if api.compare(answer, response):
+        answer = brain.calculate(equation)
+        if brain.compare(answer, response):
             equation = f"{check_mark} {equation} = {answer}"
             correct_response += 1
         else:
@@ -46,10 +46,10 @@ def menu():
 
     print(f"Total Time {round(total_response_time, 2)}")
     if correct_response == counter:
-        scores = api.get_socres()
+        scores = brain.get_socres()
         score = round(total_response_time, 2)
-        scores = api.compare_scores(score, scores)
-        api.save_score(scores)
+        scores = brain.compare_scores(score, scores)
+        brain.save_score(scores)
         print("Score Saved!")
 
 

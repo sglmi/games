@@ -7,6 +7,13 @@ def get_random_number(start=1, end=10):
     return random.randint(start, end)
 
 
+def get_question(operator):
+    num1 = get_random_number()
+    num2 = get_random_number()
+    question = f"{num1} {operator} {num2}"
+    return question
+
+
 # calculate operation
 def calculate(expresion):
     """Return calculation result of expresion
