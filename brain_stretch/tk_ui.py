@@ -68,7 +68,7 @@ class BrainStretch(ttk.Frame):
         answer = brain.calculate(question)
         response = int(self.responsebox.get())
         if brain.compare(response, answer):
-            self.log["text"] = f"COREECT"
+            self.log["text"] = f"CORRECT"
             self.log["style"] = "correct.TLabel"
         else:
             self.log["text"] = f"WRONG"
