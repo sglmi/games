@@ -73,6 +73,9 @@ class BrainStretch(ttk.Frame):
         else:
             self.log["text"] = f"WRONG"
             self.log["style"] = "wrong.TLabel"
+            num1, num2 = question.split("+")
+            row = [int(num1.strip()), int(num2.strip()), "+", response, answer]
+            brain.save_mistakes(row)
         self.responsebox.delete(0, tk.END)
         self.create_question()
 

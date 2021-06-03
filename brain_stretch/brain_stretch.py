@@ -1,3 +1,4 @@
+import csv
 import random
 import time
 
@@ -7,9 +8,14 @@ def get_random_number(start=1, end=10):
     return random.randint(start, end)
 
 
-def get_question(operator):
+def get_operands():
     num1 = get_random_number()
     num2 = get_random_number()
+    return num1, num2
+
+
+def get_question(operator):
+    num1, num2 = get_operands()
     question = f"{num1} {operator} {num2}"
     return question
 
@@ -59,6 +65,19 @@ def compare_scores(score, scores):
             scores[index] = score
             break
     return scores  # modified scores
+
+
+def read_csv(filename):
+    with open(filename) as csv_file:
+        reader = csv.reader(csv_file)
+        header = next(reader)
+
+
+def save_mistakes(mistake):
+    """Each mistake is row in csv file."""
+    with open("mistakes.csv", "a") as csv_file:
+        writer = csv.writer(csv_file)
+        writer.writerow(mistake)
 
 
 if __name__ == "__main__":
