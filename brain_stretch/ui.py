@@ -8,7 +8,7 @@ def menu():
     operator = input("Choice +, -, *, /: ")
     correct_response = 0
     n = counter = 3
-    start_range, end_range = (1, 10)
+    start_range, end_range = (100, 900)
     total_response_time = 0
     check_mark = "✅"
     cross_mark = "❌"
