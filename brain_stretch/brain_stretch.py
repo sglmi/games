@@ -9,8 +9,8 @@ def get_random_number(start=1, end=10):
 
 
 def get_operands():
-    num1 = get_random_number(100, 999)
-    num2 = get_random_number(100, 999)
+    num1 = get_random_number(1, 10)
+    num2 = get_random_number(1, 10)
     return num1, num2
 
 

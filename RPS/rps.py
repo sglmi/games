@@ -10,10 +10,11 @@ def messages(winner):
     }
     return msg.get(winner)
 
+
 def get_winner(computer_hand, user_hand):
-    """ Return 0 if computer and user has the same hand
-        Return 1 if user win
-        Return -1 if computer win(user lose)
+    """Return 0 if computer and user has the same hand
+    Return 1 if user win
+    Return -1 if computer win(user lose)
     """
     if computer_hand == user_hand:
         return 0
@@ -25,7 +26,8 @@ def get_winner(computer_hand, user_hand):
         return -1
     else:
         return 1
-    
+
+
 # Determine who is the winner
 def play(computer, user):
     if computer == user:
@@ -39,6 +41,7 @@ def play(computer, user):
     else:
         return messages(user), "You"
 
+
 def play2(computer, user):
     result = get_winner(computer, user)
     if result == 0:
@@ -48,8 +51,9 @@ def play2(computer, user):
     elif result == -1:
         return "You Lose", ""
 
+
 def rand_hand(hands):
-    """ Create random hand form the list."""
+    """Create random hand form the list."""
     return random.choice(hands)
 
 
@@ -59,6 +63,7 @@ def main():
 
     # clear console (teminal) screen before starting th game
     os.system("cls") if os.name == "nt" else os.system("clear")
+    # Menu
     for index, choice in choices.items():
         print(f"[{index}] {choice}")
 
@@ -67,7 +72,7 @@ def main():
 
     msg, winner = play2(computer_hand, user_hand)
     print("-" * 20)
-    #print(f"{winner} Win\n{msg}")
+    # print(f"{winner} Win\n{msg}")
     print(msg)
 
 
